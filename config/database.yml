@@ -1,0 +1,17 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: action_chat_translator_dev
+  pool: 5
+  username: 
+  password: 
+  host: localhost
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: action_chat_translator_test
+  pool: 5
+  username:
+  password:
+  host: localhost
