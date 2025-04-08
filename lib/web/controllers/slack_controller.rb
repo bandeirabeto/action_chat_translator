@@ -26,10 +26,10 @@ class SlackController
     if data["type"] == "event_callback" && data["event"]["type"] == "message"
       channel = data["event"]["channel"]
       text = data["event"]["text"]
-      user = data["event"]["user"]
+      bot_message = data["event"]["bot_id"].present?
 
       # Ignore blank messages or bot message
-      return [200, {}, []] if text.nil? || user.nil?
+      return [200, {}, []] if text.nil? || bot_message
 
       processor = MessageProcessor.new(translator: OpenRouterTranslator.new)
       processor.process_incoming(external_conversation_id: channel, original_text: text)
