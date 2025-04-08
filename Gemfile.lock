@@ -19,6 +19,7 @@ GEM
       concurrent-ruby (~> 1.0)
     minitest (5.25.4)
     pg (1.5.9)
+    rack (3.1.12)
     rake (13.2.1)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
@@ -35,6 +36,7 @@ GEM
     rspec-support (3.13.2)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    webrick (1.9.1)
     zeitwerk (2.6.18)
 
 PLATFORMS
@@ -45,8 +47,10 @@ DEPENDENCIES
   activesupport
   dotenv
   pg
+  rack
   rake
   rspec
+  webrick
 
 BUNDLED WITH
    2.4.6

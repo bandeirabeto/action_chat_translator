@@ -1,20 +1,15 @@
 require_relative '../spec_helper'
 require_relative '../../lib/services/message_processor'
 
-class FakeTranslator
+class FakeProcessorTranslator
   def translate(text, from:, to:)
     "FAKE_#{text}_#{from}_TO_#{to}"
   end
 end
 
 RSpec.describe MessageProcessor do
-  let(:translator) { FakeTranslator.new }
+  let(:translator) { FakeProcessorTranslator.new }
   let(:processor) { MessageProcessor.new(translator: translator) }
-
-  before do
-    Message.delete_all
-    Conversation.delete_all
-  end
 
   it "creates a conversation if it doesn't exist" do
     expect {

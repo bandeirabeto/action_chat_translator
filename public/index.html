@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Action Chat Translator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/assets/style.css" />
+</head>
+<body>
+  <header>
+    <div id="header-container">
+      <h1>Action Chat Translator</h1>
+    </div>
+  </header>
+
+  <div id="container">
+    <div id="chat"></div>
+  </div>
+
+  <div id="footer">
+    <div id="container">
+      <div id="input-group">
+        <textarea id="reply" placeholder="Digite sua resposta em português..."></textarea>
+        <button onclick="sendReply()">Traduzir</button>
+      </div>
+
+      <div id="pendingReply" style="display:none; margin-top: 10px;">
+        <p><strong>🇺🇸: </strong> <span id="translatedText"></span></p>
+        <button onclick="confirmReply()">Confirmar e Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>
