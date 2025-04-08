@@ -21,7 +21,7 @@ class OpenRouterTranslator
     request.body = {
       model: @model,
       messages: [
-        { role: "system", content: "You are a professional translator. Translate all incoming messages from #{from} to #{to} only. Do not explain." },
+        { role: "system", content: "Translate this text #{from} to #{to} only. You should only translate the text without adding anything else. Never. Return only the translated text without additions." },
         { role: "user", content: text }
       ]
     }.to_json

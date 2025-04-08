@@ -1,6 +1,7 @@
 require 'rack'
 require 'webrick'
 require_relative 'controllers/messages_controller'
+require_relative 'controllers/slack_controller'
 
 module Web
   class Server
@@ -9,6 +10,10 @@ module Web
       api_routes = Rack::Builder.new do
         map "/messages" do
           run MessagesController.new
+        end
+
+        map "/slack/events" do
+          run SlackController.new
         end
       end.to_app
 
@@ -23,7 +28,7 @@ module Web
         path = req.path
 
         # Redirect API routes to the app
-        if path.start_with?("/messages")
+        if is_api_route?(path)
           env = {
             "REQUEST_METHOD" => req.request_method,
             "PATH_INFO" => req.path,
@@ -64,6 +69,10 @@ module Web
 
       trap("INT") { server.shutdown }
       server.start
+    end
+
+    def self.is_api_route?(path)
+      path.start_with?("/messages") || path.start_with?("/slack")
     end
   end
 end

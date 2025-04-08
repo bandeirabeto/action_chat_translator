@@ -11,7 +11,7 @@ class MessageResponder
     conversation = Conversation.order(created_at: :desc).first
     raise "No active conversation" unless conversation
 
-    translated = @translator.translate(user_text_pt, from: "pt", to: "en")
+    translated = @translator.translate(user_text_pt, from: "pt-br", to: "en")
 
     conversation.messages.create!(
       original_text: user_text_pt,

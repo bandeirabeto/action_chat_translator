@@ -45,5 +45,5 @@ async function confirmReply() {
   fetchMessages();
 }
 
-setInterval(fetchMessages, 3000);
+setInterval(fetchMessages, 1000);
 fetchMessages();

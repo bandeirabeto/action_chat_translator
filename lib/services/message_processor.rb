@@ -16,7 +16,7 @@ class MessageProcessor
   def process_incoming(external_conversation_id:, original_text:)
     conversation = Conversation.find_or_create_by!(external_id: external_conversation_id)
 
-    translated = @translator.translate(original_text, from: "en", to: "pt")
+    translated = @translator.translate(original_text, from: "en", to: "pt-br")
 
     conversation.messages.create!(
       original_text: original_text,

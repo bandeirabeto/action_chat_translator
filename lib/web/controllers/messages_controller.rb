@@ -42,7 +42,7 @@ class MessagesController
     respond(201, MessageSerializer.new(message).as_json)
   end
 
-  def confirm_last(_req)
+  def confirm_last
     confirmer = MessageConfirmer.new
     message = confirmer.confirm_last!
 
