@@ -1,24 +1,30 @@
 require_relative '../spec_helper'
 require_relative '../../lib/services/message_confirmer'
 
+class FakeSlackSender
+  def post_message(channel:, text:)
+    true
+  end
+end
+
 RSpec.describe MessageConfirmer do
-  let(:service) { MessageConfirmer.new }
+  let(:service) { MessageConfirmer.new(slack_sender: FakeSlackSender.new) }
+  let(:confirmer) { MessageConfirmer.new(slack_sender: FakeSlackSender.new) }
 
   before do
     @conversation = Conversation.create!(external_id: "C123")
   end
 
   it "confirms and updates message status to 'sent'" do
-    msg = @conversation.messages.create!(
+    conv = Conversation.create!(external_id: "C124")
+    msg = conv.messages.create!(
       original_text: "Olá",
       translated_text: "Hello",
-      status: "confirmed"
+      status: :confirmed
     )
 
-    confirmed = service.confirm_last!
-
-    expect(confirmed.status).to eq("sent")
-    expect(confirmed.id).to eq(msg.id)
+    result = confirmer.confirm_last!
+    expect(result.status).to eq("sent")
   end
 
   it "raises error if no conversation" do

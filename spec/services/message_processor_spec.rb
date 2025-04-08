@@ -29,7 +29,7 @@ RSpec.describe MessageProcessor do
 
     msg = Message.last
     expect(msg.original_text).to eq("Hello!")
-    expect(msg.translated_text).to eq("FAKE_Hello!_en_TO_pt")
+    expect(msg.translated_text).to eq("FAKE_Hello!_en_TO_pt-br")
     expect(msg.translated?).to be true
   end
 end

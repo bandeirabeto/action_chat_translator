@@ -3,6 +3,8 @@ require_relative '../lib/models/base_record'
 require 'dotenv/load'
 require 'rspec'
 
+ENV["RACK_ENV"] ||= "test"
+
 BaseRecord.setup_connection!
 
 RSpec.configure do |config|
