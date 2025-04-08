@@ -6,7 +6,7 @@ require_relative 'translator_interface'
 class OpenRouterTranslator
   include TranslatorInterface
 
-  def initialize(api_key: ENV['OPENROUTER_API_KEY'], model: 'mistralai/mistral-7b-instruct')
+  def initialize(api_key: ENV['OPENROUTER_API_KEY'], model: 'openai/gpt-3.5-turbo')
     raise "Missing OpenRouter API key" if api_key.nil? || api_key.empty?
 
     @api_key = api_key
@@ -21,7 +21,7 @@ class OpenRouterTranslator
     request.body = {
       model: @model,
       messages: [
-        { role: "system", content: "Translate this text #{from} to #{to} only. You should only translate the text without adding anything else. Never. Return only the translated text without additions." },
+        { role: "system", content: "You are a translation engine. Translate the input from #{from} to #{to}. Respond ONLY with the translated sentence. Do NOT explain, comment, rephrase, or add anything else. Output the translation only." },
         { role: "user", content: text }
       ]
     }.to_json
