@@ -25,9 +25,14 @@
           <button onclick="sendReply()">Traduzir</button>
         </div>
   
-        <div id="pendingReply" style="display:none; margin-top: 10px;">
-          <p><strong>🇺🇸: </strong> <span id="translatedText"></span></p>
-          <button onclick="confirmReply()">Confirmar e Enviar</button>
+        <div id="pendingReply" style="display: none;">
+          <div class="translation-box">
+            <div class="translated-label">🇺🇸</div>
+            <div id="translatedText" class="translated-text"></div>
+            <div class="confirm-button">
+              <button onclick="confirmReply()">Confirmar e Enviar</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,25 +1,41 @@
+let lastMessageId = null;
+
 async function fetchMessages() {
   const res = await fetch("/messages");
   const data = await res.json();
 
   const chat = document.getElementById("chat");
+
+  const latest = data[data.length - 1];
+  const isNewMessage = latest && latest.id !== lastMessageId;
+
   chat.innerHTML = "";
 
   data.forEach(msg => {
+    if (msg.status === "confirmed") return;
+
     const div = document.createElement("div");
     div.className = "message";
     div.classList.add(msg.status === "translated" ? "from-interviewer" : "from-user");
 
+    const isInterviewer = msg.status === "translated";
+    const main = isInterviewer ? msg.translated : msg.original;
+    const sub = isInterviewer ? msg.original : msg.translated;
+
     div.innerHTML = `
-      <div><strong>${msg.status === "translated" ? "Entrevistador" : "Você"}</strong></div>
-      <div>${msg.translated}</div>
-      <div class="status">${msg.status}</div>
+      <div class="main-text">${main}</div>
+      <div class="sub-text">🇺🇸 ${sub}</div>
+      ${msg.status !== "translated" ? `<div class="status-text">${msg.status}</div>` : ""}
     `;
 
     chat.appendChild(div);
   });
 
-  chat.scrollTop = chat.scrollHeight;
+  if (isNewMessage) {
+    const last = chat.lastElementChild;
+    if (last) last.scrollIntoView({ behavior: "smooth" });
+    lastMessageId = latest.id;
+  }
 }
 
 async function sendReply() {
@@ -42,6 +58,8 @@ async function confirmReply() {
   await fetch("/messages/confirm", { method: "POST" });
   document.getElementById("pendingReply").style.display = "none";
   document.getElementById("reply").value = "";
+
+  lastMessageId = null;
   fetchMessages();
 }
 
