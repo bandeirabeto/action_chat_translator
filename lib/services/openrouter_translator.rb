@@ -15,25 +15,46 @@ class OpenRouterTranslator
   end
 
   def translate(text, from:, to:)
+    prompt = build_prompt(text, from, to)
+    response = make_request(prompt)
+    validate_response!(response)
+    parse_response(response)
+  end
+
+  private
+
+  def build_prompt(text, from, to)
+    <<~PROMPT
+      You are a translation engine. Translate the input from #{from} to #{to}.
+      Respond ONLY with the translated sentence. Do NOT explain, comment, rephrase, or add anything else. Output the translation only.
+
+      Input: #{text}
+    PROMPT
+  end
+
+  def make_request(prompt)
     request = Net::HTTP::Post.new(@uri)
     request['Authorization'] = "Bearer #{@api_key}"
     request['Content-Type'] = 'application/json'
     request.body = {
       model: @model,
       messages: [
-        { role: "system", content: "You are a translation engine. Translate the input from #{from} to #{to}. Respond ONLY with the translated sentence. Do NOT explain, comment, rephrase, or add anything else. Output the translation only." },
-        { role: "user", content: text }
+        { role: "system", content: prompt }
       ]
     }.to_json
 
-    response = Net::HTTP.start(@uri.hostname, @uri.port, use_ssl: true) do |http|
+    Net::HTTP.start(@uri.hostname, @uri.port, use_ssl: true) do |http|
       http.request(request)
     end
+  end
 
-    unless response.is_a?(Net::HTTPSuccess)
-      raise "OpenRouter error #{response.code}: #{response.body}"
-    end
+  def validate_response!(response)
+    return if response.is_a?(Net::HTTPSuccess)
 
+    raise "OpenRouter error #{response.code}: #{response.body}"
+  end
+
+  def parse_response(response)
     json = JSON.parse(response.body)
     json.dig("choices", 0, "message", "content").strip
   end
