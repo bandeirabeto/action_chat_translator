@@ -20,6 +20,7 @@ A real-time conversation translator via Slack using a free LLM (OpenRouter), wit
 ## Requirements
 
 - Ruby 2.6+ (without Rails)
+- WEBrick Web Server
 - PostgreSQL
 - Docker (optional for local LLM)
 - Account on [OpenRouter.ai](https://openrouter.ai)
